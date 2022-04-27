@@ -10,7 +10,7 @@ To get started in a existing repo:
 
 To bootstrap a new repo run:
 
-`nix flake new github:ulrikstrid/nix-templates#ocaml`
+`flake new nix-ocaml-example -t github:ulrikstrid/nix-templates#ocaml`
 
 We're using yhe OCaml overlays [repo by @anmonteiro](https://github.com/anmonteiro/nix-overlays) to get some of the latest and greatest that hasn't yet made it to `nixpkgs`. There is also excellent support for static compilation.
 
