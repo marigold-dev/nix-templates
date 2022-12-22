@@ -1,20 +1,20 @@
 {
   pkgs,
+  nix-filter,
   stdenv,
   lib,
   ocamlPackages,
   static ? false,
   doCheck,
 }:
-with ocamlPackages; rec {
+with ocamlPackages; {
   service = buildDunePackage {
     pname = "service";
     version = "0.1.0";
 
-    src = lib.filterGitSource {
-      src = ./..;
-      dirs = ["src"];
-      files = ["dune-project" "service.opam"];
+    src = nix-filter {
+      root = ./..;
+      include = ["src" "dune-project" "service.opam"];
     };
 
     # Static builds support, note that you need a static profile in your dune file

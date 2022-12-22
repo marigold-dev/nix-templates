@@ -1,29 +1,29 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:anmonteiro/nix-overlays";
+    nixpkgs.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs.inputs.flake-utils.follows = "flake-utils";
     flake-utils.url = "github:numtide/flake-utils";
-
-    ocaml-overlay.url = "github:anmonteiro/nix-overlays";
-    ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    ocaml-overlay.inputs.flake-utils.follows = "flake-utils";
+    nix-filter.url = "github:numtide/nix-filter";
   };
 
   outputs = {
     self,
     nixpkgs,
     flake-utils,
-    ocaml-overlay,
+    nix-filter,
   }: let
     out = system: let
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [ocaml-overlay.overlay];
+        overlays = [nix-filter.overlays.default];
       };
       inherit (pkgs) lib;
       myPkgs =
         pkgs.recurseIntoAttrs
         (import ./nix {
           inherit pkgs;
+          nix-filter = nix-filter.lib;
           doCheck = true;
         })
         .native;
@@ -36,7 +36,7 @@
           ocaml-lsp
           ocamlformat
           odoc
-          ocaml
+          https://ligolang.org/?lang=cameligoocaml
           dune_3
           nixfmt
         ];
@@ -44,9 +44,18 @@
 
       defaultPackage = myPkgs.service;
 
-      defaultApp =
-        flake-utils.lib.mkApp {drv = self.defaultPackage."${system}";};
+      defaultApp = {
+        type = "app";
+        program = "${myPkgs.service}/bin/service";
+      };
     };
   in
-    with flake-utils.lib; eachSystem defaultSystems out;
+    with flake-utils.lib;
+      eachSystem (with system; [
+        x86_64-linux
+        aarch64-linux
+        x86_64-darwin
+        aarch64-darwin
+      ])
+      out;
 }
