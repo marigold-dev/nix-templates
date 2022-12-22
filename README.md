@@ -6,11 +6,11 @@ Templates to quickly bootstrap a repo with `nix flakes`.
 
 To get started in a existing repo:
 
-`nix flake init --template github:ulrikstrid/nix-templates#ocaml`
+`nix flake init --template github:marigold-dev/nix-templates#ocaml`
 
 To bootstrap a new repo run:
 
-`flake new nix-ocaml-example -t github:ulrikstrid/nix-templates#ocaml`
+`nix flake new nix-ocaml-example -t github:marigold-dev/nix-templates#ocaml`
 
 We're using yhe OCaml overlays [repo by @anmonteiro](https://github.com/anmonteiro/nix-overlays) to get some of the latest and greatest that hasn't yet made it to `nixpkgs`. There is also excellent support for static compilation.
 
