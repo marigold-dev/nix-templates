@@ -5,13 +5,21 @@
   ocamlPackages,
   static ? false,
   doCheck,
+  nix-filter
 }:
 with ocamlPackages; rec {
   service = buildDunePackage {
     pname = "service";
     version = "0.1.0";
 
-    src = ../.;
+    src = nix-filter {
+      root = ../.;
+      include = [
+        "src"
+        "dune-project"
+        "service.opam"
+      ];
+    };
 
     # Static builds support, note that you need a static profile in your dune file
     buildPhase = ''

@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    nix-filter.url = "github:numtide/nix-filter";
 
     ocaml-overlay.url = "github:nix-ocaml/nix-overlays";
     ocaml-overlay.inputs.nixpkgs.follows = "nixpkgs";
@@ -12,6 +13,7 @@
     self,
     nixpkgs,
     flake-utils,
+    nix-filter,
     ocaml-overlay,
   }: let
     out = system: let
@@ -24,6 +26,7 @@
         pkgs.recurseIntoAttrs
         (import ./nix {
           inherit pkgs;
+          nix-filter = nix-filter.lib;
           doCheck = true;
         })
         .native;

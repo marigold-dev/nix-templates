@@ -1,9 +1,10 @@
 {
   pkgs ? import ./sources.nix {},
+  nix-filter,
   doCheck ? false,
 }: {
   native = pkgs.callPackage ./generic.nix {
-    inherit doCheck;
+    inherit doCheck nix-filter;
   };
 
   musl64 = let
@@ -11,7 +12,7 @@
   in
     pkgsCross.callPackage ./generic.nix {
       static = true;
-      inherit doCheck;
+      inherit doCheck nix-filter;
       ocamlPackages = pkgsCross.ocamlPackages;
     };
 }
