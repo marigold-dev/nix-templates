@@ -20,7 +20,7 @@ with ocamlPackages; rec {
         then "static"
         else "release"
       } build"
-      dune build src/bin/service.exe --display=short --profile=${
+      dune build --display=short --profile=${
         if static
         then "static"
         else "release"
@@ -28,7 +28,7 @@ with ocamlPackages; rec {
     '';
     installPhase = ''
       mkdir -p $out/bin
-      mv _build/default/bin/service.exe $out/bin/service
+      cp "$(readlink -f _build/install/default/bin/service)" "$out/bin/service"
     '';
 
     checkInputs = [
@@ -38,6 +38,8 @@ with ocamlPackages; rec {
       piaf
       lwt
       yojson
+
+      ppx_expect
     ];
 
     inherit doCheck;
