@@ -44,8 +44,10 @@
 
       defaultPackage = myPkgs.service;
 
-      defaultApp =
-        flake-utils.lib.mkApp {drv = self.defaultPackage."${system}";};
+      defaultApp = {
+        type = "app";
+        program = "${self.defaultPackage.${system}}/bin/service";
+      };
     };
   in
     with flake-utils.lib; eachSystem defaultSystems out;
