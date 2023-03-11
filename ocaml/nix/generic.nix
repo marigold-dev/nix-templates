@@ -11,11 +11,7 @@ with ocamlPackages; rec {
     pname = "service";
     version = "0.1.0";
 
-    src = lib.filterGitSource {
-      src = ./..;
-      dirs = ["src"];
-      files = ["dune-project" "service.opam"];
-    };
+    src = ../.;
 
     # Static builds support, note that you need a static profile in your dune file
     buildPhase = ''
