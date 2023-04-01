@@ -19,6 +19,11 @@
         path = ./hello-ocaml-dream;
         description = "An extension of the hello-ocaml flake into a more full environment";
       };
+
+      deno = {
+        path = ./deno;
+        description = "Deno development flake";
+      };
     };
   };
 }
